@@ -1,4 +1,5 @@
 use std::fs;
+use std::process::Command;
 use headless_chrome::{Browser, protocol::cdp::Page};
  
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -8,8 +9,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Chrome always opens with one tab open, so
     // you just get that initial tab.
     let tab = browser.new_tab()?;
-
-    // let tools = devtools(tab, true) 
  
     // Navigate to the website and wait for it to
     // finish loading
@@ -34,5 +33,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // // Save the bytes to a screenshot.png file
     // fs::write("screenshot.png", png_data)?;
  
+    Command::new("ocrs")
+    .arg("screenshot.jpeg")
+    .arg("-o")
+    .arg("test1.txt")
+    .spawn()
+    .expect("ocrs command failed to start");
+
     Ok(())
 }
